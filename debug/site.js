@@ -5,54 +5,73 @@ var map = new mapboxgl.Map({
     container: 'map',
     zoom: 12.5,
     center: [-77.01866, 38.888],
-    style: 'mapbox://styles/mapbox/streets-v8',
+    style: {
+        version: 8,
+        sources: {
+            mapbox: {
+                type: "vector",
+                url: "mapbox://mapbox.mapbox-streets-v6"
+            }
+        },
+        layers: [{ // #road_label
+            id: 'test',
+            type: 'symbol',
+            source: 'mapbox',
+            'source-layer': 'road_label'
+            layout: {
+                'text-field': '{name_en}'
+            }
+        }]
+    },
     hash: true
 });
 
 map.addControl(new mapboxgl.Navigation());
 
 map.on('style.load', function() {
-    map.addSource('geojson', {
-        "type": "geojson",
-        "data": "/debug/route.json"
-    });
+    // map.addSource('geojson', {
+    //     "type": "geojson",
+    //     "data": "/debug/route.json"
+    // });
+    //
+    // map.addLayer({
+    //     "id": "route",
+    //     "type": "line",
+    //     "source": "geojson",
+    //     "paint": {
+    //         "line-color": "#EC8D8D",
+    //         "line-width": {
+    //             "base": 1.5,
+    //             "stops": [
+    //                 [
+    //                     5,
+    //                     0.75
+    //                 ],
+    //                 [
+    //                     18,
+    //                     32
+    //                 ]
+    //             ]
+    //         }
+    //     }
+    // }, 'country-label-lg');
+    //
+    // map.addSource('geojson-random-points', {
+    //     "type": "geojson",
+    //     "data": "/debug/random.geojson"
+    // });
+    //
+    // map.addLayer({
+    //     "id": "random-points",
+    //     "type": "circle",
+    //     "source": "geojson-random-points",
+    //     "paint": {
+    //         "circle-radius": 5,
+    //         "circle-color": "#f0f"
+    //     }
+    // });
 
-    map.addLayer({
-        "id": "route",
-        "type": "line",
-        "source": "geojson",
-        "paint": {
-            "line-color": "#EC8D8D",
-            "line-width": {
-                "base": 1.5,
-                "stops": [
-                    [
-                        5,
-                        0.75
-                    ],
-                    [
-                        18,
-                        32
-                    ]
-                ]
-            }
-        }
-    }, 'country-label-lg');
-
-    map.addSource('geojson-random-points', {
-        "type": "geojson",
-        "data": "/debug/random.geojson"
-    });
-
-    map.addLayer({
-        "id": "random-points",
-        "type": "circle",
-        "source": "geojson-random-points",
-        "paint": {
-            "circle-radius": 5,
-            "circle-color": "#f0f"
-        }
-    });
+    map.addClass('lucaswoj');
 
     var bufferTimes = {};
     map.on('tile.stats', function(bufferTimes) {
