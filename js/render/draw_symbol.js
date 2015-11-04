@@ -70,7 +70,7 @@ function drawSymbol(painter, paint, layout, layer, posMatrix, tile, elementGroup
     }
     mat4.scale(exMatrix, exMatrix, [s, s, 1]);
 
-    var fontSize = paint[prefix + '-size'];
+    var fontSize = layout[prefix + '-size'];
     var fontScale = fontSize / defaultSizes[prefix];
     mat4.scale(exMatrix, exMatrix, [ fontScale, fontScale, 1 ]);
 

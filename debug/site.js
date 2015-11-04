@@ -7,17 +7,19 @@ var map = new mapboxgl.Map({
     center: [-77.01866, 38.888],
     style: {
         version: 8,
+        "sprite": "mapbox://sprites/mapbox/streets-v8",
+        "glyphs": "mapbox://fonts/mapbox/{fontstack}/{range}.pbf",
         sources: {
             mapbox: {
                 type: "vector",
                 url: "mapbox://mapbox.mapbox-streets-v6"
             }
         },
-        layers: [{ // #road_label
+        layers: [{
             id: 'test',
             type: 'symbol',
             source: 'mapbox',
-            'source-layer': 'road_label'
+            'source-layer': 'road_label',
             layout: {
                 'text-field': '{name_en}'
             }
