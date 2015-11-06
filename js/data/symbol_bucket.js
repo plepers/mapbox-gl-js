@@ -396,6 +396,8 @@ SymbolBucket.prototype.placeFeatures = function(collisionTile, buffers, collisio
 SymbolBucket.prototype.addSymbols = function(shaderName, quads, scale, keepUpright, alongLine, placementAngle) {
 
     var group = this.makeRoomFor(shaderName, 4 * quads.length);
+
+    // TODO manual curry
     var addElement = this[this.getAddMethodName(shaderName, 'element')].bind(this);
     var addVertex = this[this.getAddMethodName(shaderName, 'vertex')].bind(this);
 
@@ -426,10 +428,10 @@ SymbolBucket.prototype.addSymbols = function(shaderName, quads, scale, keepUprig
         // Lower min zoom so that while fading out the label it can be shown outside of collision-free zoom levels
         if (minZoom === placementZoom) minZoom = 0;
 
-        var index0 = addVertex(anchorPoint.x, anchorPoint.y, tl.x, tl.y, tex.x, tex.y, minZoom, maxZoom, placementZoom);
-        var index1 = addVertex(anchorPoint.x, anchorPoint.y, tr.x, tr.y, tex.x + tex.w, tex.y, minZoom, maxZoom, placementZoom);
-        var index2 = addVertex(anchorPoint.x, anchorPoint.y, bl.x, bl.y, tex.x, tex.y + tex.h, minZoom, maxZoom, placementZoom);
-        var index3 = addVertex(anchorPoint.x, anchorPoint.y, br.x, br.y, tex.x + tex.w, tex.y + tex.h, minZoom, maxZoom, placementZoom);
+        var index0 = addVertex(anchorPoint.x, anchorPoint.y, tl.x, tl.y, tex.x, tex.y, minZoom, maxZoom, placementZoom) - group.vertexStartIndex;
+        var index1 = addVertex(anchorPoint.x, anchorPoint.y, tr.x, tr.y, tex.x + tex.w, tex.y, minZoom, maxZoom, placementZoom) - group.vertexStartIndex;
+        var index2 = addVertex(anchorPoint.x, anchorPoint.y, bl.x, bl.y, tex.x, tex.y + tex.h, minZoom, maxZoom, placementZoom) - group.vertexStartIndex;
+        var index3 = addVertex(anchorPoint.x, anchorPoint.y, br.x, br.y, tex.x + tex.w, tex.y + tex.h, minZoom, maxZoom, placementZoom) - group.vertexStartIndex;
         group.vertexLength += 4;
 
         addElement(index0, index1, index2);

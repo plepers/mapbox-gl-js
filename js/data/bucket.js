@@ -205,7 +205,8 @@ function createVertexAddMethod(shaderName, shader, bufferName) {
     for (var i = 0; i < shader.attributes.length; i++) {
         pushArgs = pushArgs.concat(shader.attributes[i].value);
     }
-    var body = 'return this.buffers.' + bufferName + '.push(\n    ' + pushArgs.join(',\n    ') + '\n) - this.elementGroups.' + shaderName + '.current.vertexStartIndex;';
+
+    var body = 'return this.buffers.' + bufferName + '.push(' + pushArgs.join(', ') + ');'
     return new Function(shader.attributeArgs, body);
 }
 

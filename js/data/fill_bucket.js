@@ -59,7 +59,7 @@ FillBucket.prototype.addFill = function(vertices) {
     for (var i = 0; i < vertices.length; i++) {
         var currentVertex = vertices[i];
 
-        var currentIndex = this.addFillVertex(currentVertex.x, currentVertex.y);
+        var currentIndex = this.addFillVertex(currentVertex.x, currentVertex.y) - group.vertexStartIndex;
         group.vertexLength++;
         if (i === 0) firstIndex = currentIndex;
 

@@ -60,10 +60,10 @@ CircleBucket.prototype.addFeature = function(feature) {
         // │ 0     1 │
         // └─────────┘
 
-        var vertex0 = this.addCircleVertex(x, y, -1, -1);
-        var vertex1 = this.addCircleVertex(x, y, 1, -1);
-        var vertex2 = this.addCircleVertex(x, y, 1, 1);
-        var vertex3 = this.addCircleVertex(x, y, -1, 1);
+        var vertex0 = this.addCircleVertex(x, y, -1, -1) - group.vertexStartIndex;
+        var vertex1 = this.addCircleVertex(x, y, 1, -1) - group.vertexStartIndex;
+        var vertex2 = this.addCircleVertex(x, y, 1, 1) - group.vertexStartIndex;
+        var vertex3 = this.addCircleVertex(x, y, -1, 1) - group.vertexStartIndex;
         group.vertexLength += 4;
 
         this.addCircleElement(vertex0, vertex1, vertex2);
