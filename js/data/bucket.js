@@ -65,7 +65,10 @@ function Bucket(options) {
     this.layoutProperties = createLayoutProperties(this.layer, this.zoom);
 
     this.resetBuffers(options.buffers);
+    this.resetAddMethods();
+}
 
+Bucket.prototype.resetAddMethods = function() {
     for (var shaderName in this.shaders) {
         var shader = this.shaders[shaderName];
         if (shader.vertexBuffer) {
@@ -146,9 +149,9 @@ Bucket.prototype.resetBuffers = function(buffers) {
         }
 
         this.elementGroups[shaderName] = new ElementGroups(
-            buffers[this.getBufferName(shaderName, 'vertex')],
-            buffers[this.getBufferName(shaderName, 'element')],
-            buffers[this.getBufferName(shaderName, 'secondElement')]
+            buffers[vertexBufferName],
+            buffers[elementBufferName],
+            buffers[secondElementBufferName]
         );
     }
 };
