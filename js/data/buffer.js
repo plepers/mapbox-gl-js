@@ -183,24 +183,24 @@ Buffer.prototype._createPushMethod = function() {
     var body = '';
     var argNames = [];
 
-    body += 'var i = this.length++;\n';
-    body += 'var o = i * ' + this.itemSize + ';\n';
+    body += 'var i = this.length++;';
+    body += 'var o = i * ' + this.itemSize + ';';
 
     for (var i = 0; i < this.attributes.length; i++) {
         var attribute = this.attributes[i];
         var offsetId = 'o' + i;
 
-        body += '\nvar ' + offsetId + ' = (o + ' + attribute.offset + ') / ' + attribute.type.size + ';\n';
+        body += 'var ' + offsetId + ' = (o + ' + attribute.offset + ') / ' + attribute.type.size + ';';
 
         for (var j = 0; j < attribute.components; j++) {
             var rvalue = 'v' + argNames.length;
             var lvalue = 'this.views.' + attribute.type.name + '[' + offsetId + ' + ' + j + ']';
-            body += lvalue + ' = ' + rvalue + ';\n';
+            body += lvalue + ' = ' + rvalue + ';';
             argNames.push(rvalue);
         }
     }
 
-    body += '\nreturn i;\n';
+    body += 'return i;';
 
     if (!createPushMethodCache[body]) {
         createPushMethodCache[body] = new Function(argNames, body);
