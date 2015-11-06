@@ -43,7 +43,7 @@ CircleBucket.prototype.addFeature = function(feature) {
 
     var geometries = feature.loadGeometry()[0];
     for (var j = 0; j < geometries.length; j++) {
-        var group = this.makeRoomFor('circle', 4);
+        var group = this.makeRoomFor('circle', 4, 2);
 
         var x = geometries[j].x;
         var y = geometries[j].y;

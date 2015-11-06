@@ -110,8 +110,8 @@ Bucket.prototype.addFeatures = function() {
  * @param {string} shaderName the name of the shader associated with the buffer that will receive the vertices
  * @param {number} vertexLength The number of vertices that will be inserted to the buffer.
  */
-Bucket.prototype.makeRoomFor = function(shaderName, vertexLength) {
-    return this.elementGroups[shaderName].makeRoomFor(vertexLength);
+Bucket.prototype.makeRoomFor = function(shaderName, vertexLength, elementsLength, secondElementsLength) {
+    return this.elementGroups[shaderName].makeRoomFor(vertexLength, elementsLength, secondElementsLength);
 };
 
 /**

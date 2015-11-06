@@ -395,7 +395,7 @@ SymbolBucket.prototype.placeFeatures = function(collisionTile, buffers, collisio
 
 SymbolBucket.prototype.addSymbols = function(shaderName, quads, scale, keepUpright, alongLine, placementAngle) {
 
-    var group = this.makeRoomFor(shaderName, 4 * quads.length);
+    var group = this.makeRoomFor(shaderName, 4 * quads.length, 2 * quads.length);
 
     // TODO manual curry
     var addElement = this[this.getAddMethodName(shaderName, 'element')].bind(this);
@@ -461,7 +461,7 @@ SymbolBucket.prototype.updateFont = function(stacks) {
 
 SymbolBucket.prototype.addToDebugBuffers = function(collisionTile) {
     this.elementGroups.collisionBox = new ElementGroups(this.buffers.collisionBoxVertex);
-    this.makeRoomFor('collisionBox', 0);
+    var group = this.makeRoomFor('collisionBox', 8);
     var angle = -collisionTile.angle;
     var yStretch = collisionTile.yStretch;
 
@@ -491,6 +491,7 @@ SymbolBucket.prototype.addToDebugBuffers = function(collisionTile) {
                 this.addCollisionBoxVertex(anchorPoint, bl, maxZoom, placementZoom);
                 this.addCollisionBoxVertex(anchorPoint, bl, maxZoom, placementZoom);
                 this.addCollisionBoxVertex(anchorPoint, tl, maxZoom, placementZoom);
+                group.vertexLength += 8;
             }
         }
     }

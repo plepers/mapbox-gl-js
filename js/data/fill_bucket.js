@@ -52,7 +52,7 @@ FillBucket.prototype.addFill = function(vertices) {
     var len = vertices.length;
 
     // Expand this geometry buffer to hold all the required vertices.
-    var group = this.makeRoomFor('fill', len + 1);
+    var group = this.makeRoomFor('fill', len + 1, len, len);
 
     // We're generating triangle fans, so we always start with the first coordinate in this polygon.
     var firstIndex, prevIndex;

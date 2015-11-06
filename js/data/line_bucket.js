@@ -82,7 +82,7 @@ LineBucket.prototype.addLine = function(vertices, join, cap, miterLimit, roundLi
         closed = firstVertex.equals(lastVertex);
 
     // we could be more precise, but it would only save a negligible amount of space
-    this.makeRoomFor('line', len * 10);
+    this.makeRoomFor('line', len * 10, len * 10);
 
     if (len === 2 && closed) {
         // console.warn('a line may not have coincident points');

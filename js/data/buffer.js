@@ -158,12 +158,15 @@ Buffer.prototype.validate = function(args) {
     assert(argIndex === args.length);
 };
 
-Buffer.prototype._resize = function(capacity) {
-    var old = this.views.UNSIGNED_BYTE;
-    this.capacity = align(capacity, Buffer.CAPACITY_ALIGNMENT);
-    this.arrayBuffer = new ArrayBuffer(this.capacity);
-    this._refreshViews();
-    this.views.UNSIGNED_BYTE.set(old);
+Buffer.prototype.makeRoomFor = function(length) {
+    var capacityNeeded = (length + this.length) * this.itemSize;
+    if (capacityNeeded > this.capacity) {
+        var old = this.views.UNSIGNED_BYTE;
+        this.capacity = align(capacityNeeded * 1.5, Buffer.CAPACITY_ALIGNMENT);
+        this.arrayBuffer = new ArrayBuffer(this.capacity);
+        this._refreshViews();
+        this.views.UNSIGNED_BYTE.set(old);
+    }
 };
 
 Buffer.prototype._refreshViews = function() {
@@ -182,7 +185,6 @@ Buffer.prototype._createPushMethod = function() {
 
     body += 'var i = this.length++;\n';
     body += 'var o = i * ' + this.itemSize + ';\n';
-    body += 'if (o + ' + this.itemSize + ' > this.capacity) { this._resize(this.capacity * 1.5); }\n';
 
     for (var i = 0; i < this.attributes.length; i++) {
         var attribute = this.attributes[i];
