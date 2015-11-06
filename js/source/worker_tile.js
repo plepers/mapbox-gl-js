@@ -18,6 +18,9 @@ function WorkerTile(params) {
     this.collisionDebug = params.collisionDebug;
 }
 
+var iconsCache = {};
+var glyphsCache = {};
+
 WorkerTile.prototype.parse = function(data, layers, actor, callback) {
 
     this.status = 'parsing';
@@ -128,13 +131,13 @@ WorkerTile.prototype.parse = function(data, layers, actor, callback) {
 
         var deps = 0;
 
-        actor.send('get glyphs', {uid: this.uid, stacks: stacks}, function(err, newStacks) {
+        getGlyphs(this.uid, stacks, function(err, newStacks) {
             stacks = newStacks;
             gotDependency(err);
         });
 
         if (icons.length) {
-            actor.send('get icons', {icons: icons}, function(err, newIcons) {
+            getIcons(icons, function(err, newIcons) {
                 icons = newIcons;
                 gotDependency(err);
             });
@@ -198,6 +201,34 @@ WorkerTile.prototype.parse = function(data, layers, actor, callback) {
             extent: extent,
             bucketStats: stats
         }, getTransferables(buffers));
+    }
+
+    function getIcons(icons, callback) {
+        var key = JSON.stringify(icons);
+        if (!iconsCache[key]) {
+            actor.send('get icons', {icons: icons}, function(err, icons) {
+                iconsCache[key] = icons;
+                callback(err, icons);
+            });
+        } else {
+            setTimeout(function() {
+                callback(null, iconsCache[key]);
+            }, 0);
+        }
+    }
+
+    function getGlyphs(uid, stacks, callback) {
+        var key = JSON.stringify([uid, stacks]);
+        if (!glyphsCache[key]) {
+            actor.send('get glyphs', {uid: uid, stacks: stacks}, function(err, stacks) {
+                glyphsCache[key] = stacks;
+                callback(err, stacks);
+            });
+        } else {
+            setTimeout(function() {
+                callback(null, glyphsCache[key]);
+            }, 0);
+        }
     }
 };
 
