@@ -78,17 +78,15 @@ function Bucket(options) {
 
         if (shader.elementBuffer) {
             this[this.getAddMethodName(shaderName, 'element')] = createElementAddMethod(
-                shaderName,
-                this.getBufferName(shaderName, 'element'),
-                'elementLength'
+                this.buffers,
+                this.getBufferName(shaderName, 'element')
             );
         }
 
         if (shader.secondElementBuffer) {
             this[this.getAddMethodName(shaderName, 'secondElement')] = createElementAddMethod(
-                shaderName,
-                this.getBufferName(shaderName, 'secondElement'),
-                'secondElementLength'
+                this.buffers,
+                this.getBufferName(shaderName, 'secondElement')
             );
         }
     }
@@ -216,11 +214,11 @@ function createVertexAddMethod(shaderName, shader, bufferName) {
     return new Function(shader.attributeArgs, body);
 }
 
-function createElementAddMethod(shaderName, bufferName, lengthName) {
+function createElementAddMethod(buffers, bufferName) {
+    var buffer = buffers[bufferName];
     return function(one, two, three) {
-        this.elementGroups[shaderName].current[lengthName]++;
-        return this.buffers[bufferName].push(one, two, three);
-    };
+        return buffer.push(one, two, three);
+    }
 }
 
 function createElementBuffer(components) {

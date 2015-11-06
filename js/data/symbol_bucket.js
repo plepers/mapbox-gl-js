@@ -434,6 +434,7 @@ SymbolBucket.prototype.addSymbols = function(shaderName, quads, scale, keepUprig
 
         addElement(index0, index1, index2);
         addElement(index1, index2, index3);
+        this.elementGroups[shaderName].current.elementLength += 2;
     }
 
 };

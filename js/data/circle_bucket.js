@@ -67,6 +67,7 @@ CircleBucket.prototype.addFeature = function(feature) {
 
         this.addCircleElement(vertex0, vertex1, vertex2);
         this.addCircleElement(vertex0, vertex3, vertex2);
+        this.elementGroups.circle.current.elementLength += 2;
     }
 
 };
