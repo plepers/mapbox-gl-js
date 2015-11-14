@@ -25,31 +25,31 @@
 
   {{#if params}}
     <h3 class='space-bottom1 space-top1'>Parameters</h3>
-    <table class='prose space-bottom1'>
+    <table class='prose space-bottom1 small'>
       {{#params}}
         <tr>
-          <th>
+          <td class="fill-light">
             <div class="code strong">{{name}}</div>
-            <div class="small quiet">
+            <div class="quiet">
             {{{format_type type}}}
                 {{#default}}
                   (default <code>{{.}}</code>)
                 {{/default}}
             </div>
-        </th>
+          </td>
           <td>{{{md description}}}</td>
         </tr>
         {{#properties}}
           <tr>
-            <th>
+            <td class="fill-light">
               <div class="code strong">{{name}}</div>
-              <div class="small quiet">
+              <div class="quiet">
                 {{{format_type type}}}
                 {{#default}}
                   (default <code>{{.}}</code>)
                 {{/default}}
               </div>
-            </th>
+            </td>
             <td>{{{md description}}}</td>
           </tr>
         {{/properties}}
@@ -59,18 +59,18 @@
 
   {{#if properties}}
     <h3 class='space-bottom1 space-top1'>Properties</h3>
-    <table class='prose space-bottom1'>
+    <table class='prose space-bottom1 small'>
       {{#properties}}
         <tr>
-          <th>
+          <td class="fill-light">
             <div class="code strong">{{name}}</div>
-            <div class="small quiet">
+            <div class="quiet">
               {{{format_type type}}}
               {{#default}}
                 (default <code>{{.}}</code>)
               {{/default}}
             </div>
-          </th>
+          </td>
           <td>{{{md description}}}</td>
         </tr>
       {{/properties}}
