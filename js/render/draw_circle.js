@@ -35,7 +35,6 @@ function drawCirclesTile(painter, layer, tile) {
     gl.uniformMatrix4fv(shader.u_exmatrix, false, tile.exMatrix);
 
     var vertex = tile.buffers.circleVertex;
-    var shader = painter.circleShader;
     var elements = tile.buffers.circleElement;
 
     // antialiasing factor: this is a minimum blur distance that serves as
