@@ -32,6 +32,17 @@ Painter.prototype.resize = function(width, height) {
 
     this.width = width * browser.devicePixelRatio;
     this.height = height * browser.devicePixelRatio;
+
+    if( this.renderToTexture ){
+        if( this.fbo ){
+            this.resizeFbo();
+        } else {
+            this.setupFbo();
+        }
+
+        gl.bindFramebuffer(gl.FRAMEBUFFER, this.fbo);
+    }
+
     gl.viewport(0, 0, this.width, this.height);
 
 };
@@ -121,6 +132,70 @@ Painter.prototype.setup = function() {
     this.debugTextBuffer = gl.createBuffer();
     this.debugTextBuffer.itemSize = 2;
 };
+
+
+Painter.prototype.resizeFbo = function() {
+    var gl = this.gl;
+
+    var type = gl.UNSIGNED_BYTE;
+    gl.bindTexture( gl.TEXTURE_2D, this.color );
+    gl.texImage2D( gl.TEXTURE_2D, 0, gl.RGBA, this.width, this.height, 0, gl.RGBA, type, null );
+    gl.bindTexture( gl.TEXTURE_2D, null );
+
+    gl.bindRenderbuffer( gl.RENDERBUFFER, this.depthStencil );
+    gl.renderbufferStorage( gl.RENDERBUFFER, gl.DEPTH_STENCIL, this.width, this.height );
+    gl.bindRenderbuffer( gl.RENDERBUFFER, null );
+};
+
+
+Painter.prototype.setupFbo = function() {
+    var gl = this.gl;
+
+    var width  = this.width;
+    var height = this.height;
+
+    this.color = gl.createTexture();
+
+    gl.bindTexture( gl.TEXTURE_2D, this.color );
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+
+    var type = gl.UNSIGNED_BYTE;
+
+    gl.texImage2D( gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, type, null );
+
+    gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR );
+    gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR );
+    gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT );
+    gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT );
+
+
+    this.fbo = gl.createFramebuffer();
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, this.fbo);
+    gl.framebufferTexture2D( gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, this.color, 0 );
+
+
+    this.depthStencil = gl.createRenderbuffer();
+    gl.bindRenderbuffer( gl.RENDERBUFFER, this.depthStencil );
+    gl.renderbufferStorage( gl.RENDERBUFFER, gl.DEPTH_STENCIL, width, height );
+    gl.framebufferRenderbuffer( gl.FRAMEBUFFER, gl.DEPTH_STENCIL_ATTACHMENT, gl.RENDERBUFFER, this.depthStencil );
+
+
+    gl.bindTexture( gl.TEXTURE_2D, null );
+    gl.bindRenderbuffer( gl.RENDERBUFFER, null );
+
+
+    this.valid = true;
+    if( gl.checkFramebufferStatus(gl.FRAMEBUFFER) != gl.FRAMEBUFFER_COMPLETE ){
+      this.valid = false;
+      console.warn( 'FBO error' )
+    }
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+
+};
+
+
 
 /**
  * Rebind the necessary buffers to render at a different extent than

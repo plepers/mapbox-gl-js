@@ -90,6 +90,10 @@ var Map = module.exports = function(options) {
     this._setupContainer();
     this._setupPainter();
 
+    if( options.renderToTexture ){
+        this.painter.renderToTexture = true;
+    }
+
     this.on('move', this.update.bind(this, false));
     this.on('zoom', this.update.bind(this, true));
     this.on('moveend', function() {
@@ -158,7 +162,9 @@ util.extend(Map.prototype, /** @lends Map.prototype */{
         attributionControl: true,
 
         failIfMajorPerformanceCaveat: false,
-        preserveDrawingBuffer: false
+        preserveDrawingBuffer: false,
+
+        renderToTexture: false
     },
 
     addControl: function(control) {
