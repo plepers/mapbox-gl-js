@@ -6,7 +6,8 @@ var map = new mapboxgl.Map({
     zoom: 12.5,
     center: [-77.01866, 38.888],
     style: 'mapbox://styles/mapbox/streets-v8',
-    hash: true
+    hash: true,
+    renderToTexture: true
 });
 
 map.addControl(new mapboxgl.Navigation());
