@@ -219,6 +219,8 @@ function createVertexAddMethod(shaderName, shader, bufferName) {
 function createElementAddMethod(buffers, bufferName) {
     var buffer = buffers[bufferName];
     return function(one, two, three) {
+        if( ! buffer.push )
+            buffer._createPushMethod()
         return buffer.push(one, two, three);
     };
 }

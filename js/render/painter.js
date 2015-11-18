@@ -157,16 +157,16 @@ Painter.prototype.setupFbo = function() {
     this.color = gl.createTexture();
 
     gl.bindTexture( gl.TEXTURE_2D, this.color );
-    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+    // gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
 
     var type = gl.UNSIGNED_BYTE;
 
     gl.texImage2D( gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, type, null );
 
-    gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR );
-    gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR );
-    gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT );
-    gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT );
+    gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST );
+    gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST );
+    gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE );
+    gl.texParameteri( gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE );
 
 
     this.fbo = gl.createFramebuffer();
@@ -190,6 +190,8 @@ Painter.prototype.setupFbo = function() {
       this.valid = false;
       console.warn( 'FBO error' )
     }
+
+    gl.clear( gl.COLOR_BUFFER_BIT )
 
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 
@@ -324,6 +326,10 @@ Painter.prototype.render = function(style, options) {
 
     this.frameHistory.record(this.transform.zoom);
 
+    if( this.renderToTexture ) {
+        this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.fbo);
+    }
+
     this.prepareBuffers();
     this.clearColor();
 
@@ -338,6 +344,11 @@ Painter.prototype.render = function(style, options) {
         } else if (group.source === undefined) {
             this.drawLayers(group, this.identityMatrix);
         }
+    }
+
+
+    if( this.renderToTexture ) {
+        this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
     }
 };
 
