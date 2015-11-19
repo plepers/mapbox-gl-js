@@ -24,6 +24,7 @@ mapboxgl.ImageSource = require('./source/image_source');
 mapboxgl.Style = require('./style/style');
 
 mapboxgl.LngLat = require('./geo/lng_lat');
+mapboxgl.Transform = require('./geo/transform');
 mapboxgl.LngLatBounds = require('./geo/lng_lat_bounds');
 mapboxgl.Point = require('point-geometry');
 
@@ -38,6 +39,12 @@ mapboxgl.util.getArrayBuffer = ajax.getArrayBuffer;
 
 var config = require('./util/config');
 mapboxgl.config = config;
+
+
+// expose some extras
+mapboxgl.Tile = require('./source/tile');
+mapboxgl.glmatrix = require('gl-matrix');
+
 
 Object.defineProperty(mapboxgl, 'accessToken', {
     get: function() { return config.ACCESS_TOKEN; },

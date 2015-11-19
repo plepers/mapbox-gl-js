@@ -31,7 +31,7 @@ Canvas.prototype.resize = function(width, height) {
 
 var requiredContextAttributes = {
     antialias: false,
-    alpha: true,
+    alpha: false,
     stencil: true,
     depth: false
 };

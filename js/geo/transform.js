@@ -338,6 +338,20 @@ Transform.prototype = {
         return m;
     },
 
+    copyTo: function( t ){
+        t.tileSize   = this.tileSize;
+        t.minZoom    = this._minZoom;
+        t.maxZoom    = this._maxZoom;
+        t.latRange   = this.latRange;
+        t.width      = this.width;
+        t.height     = this.height;
+        t.center     = this._center;
+        t.zoom       = this.zoom;
+        t.angle      = this.angle;
+        t.altitude   = this._altitude;
+        t.pitch      = this._pitch;
+    },
+
     _constrain: function() {
         if (!this.center || !this.width || !this.height || this._constraining) return;
 
