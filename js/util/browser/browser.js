@@ -113,5 +113,5 @@ exports.supported = function(options) {
 exports.hardwareConcurrency = navigator.hardwareConcurrency || 8;
 
 Object.defineProperty(exports, 'devicePixelRatio', {
-    get: function() { return window.devicePixelRatio; }
+    get: function() { return Math.min( 1.0, window.devicePixelRatio ); }
 });

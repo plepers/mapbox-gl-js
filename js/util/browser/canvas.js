@@ -20,6 +20,8 @@ function Canvas(parent, container) {
 Canvas.prototype.resize = function(width, height) {
     var pixelRatio = window.devicePixelRatio || 1;
 
+    pixelRatio = Math.min( pixelRatio, 1 )
+
     // Request the required canvas size taking the pixelratio into account.
     this.canvas.width = pixelRatio * width;
     this.canvas.height = pixelRatio * height;
