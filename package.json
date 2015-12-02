@@ -68,7 +68,7 @@
     "lint": "eslint js test",
     "test": "npm run lint && prova test/js/*/*.js -q",
     "test-suite": "node test/render.test.js && node test/query.test.js",
-    "build": "browserify -d js/mapbox-gl.js --standalone mapboxgl > dist/mapbox-gl-dev.js && npm run docs",
+    "build": "browserify -d js/mapbox-gl.js --standalone mapboxgl > dist/mapbox-gl-dev.js",
     "production": "browserify js/mapbox-gl.js -d -t unassertify -p [minifyify --map mapbox-gl.js.map --output dist/mapbox-gl.js.map] --standalone mapboxgl > dist/mapbox-gl.js",
     "prepublish": "npm run build && npm run production",
     "cov": "istanbul cover prova test/js/*/*.js test/render.test.js -x js/lib/debugtext.js",
