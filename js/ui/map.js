@@ -65,6 +65,8 @@ var Map = module.exports = function(options) {
     this.animationLoop = new AnimationLoop();
     this.transform = new Transform(options.minZoom, options.maxZoom);
 
+    this.disabled = false;
+
     if (options.maxBounds) {
         var b = LngLatBounds.convert(options.maxBounds);
         this.transform.lngRange = [b.getWest(), b.getEast()];
@@ -165,6 +167,15 @@ util.extend(Map.prototype, /** @lends Map.prototype */{
         preserveDrawingBuffer: false,
 
         renderToTexture: false
+    },
+
+
+    disable : function ( flag ){
+        this.disabled = flag
+        if( flag ) {
+            browser.cancelFrame(this._frameId);
+            this._frameId = null;
+        }
     },
 
     addControl: function(control) {
@@ -737,6 +748,7 @@ util.extend(Map.prototype, /** @lends Map.prototype */{
      * @returns {Map} this
      */
     update: function(updateStyle) {
+        if ( this.disabled ) return;
         if (!this.style) return this;
 
         this._styleDirty = this._styleDirty || updateStyle;
@@ -753,6 +765,8 @@ util.extend(Map.prototype, /** @lends Map.prototype */{
      * @returns {Map} this
      */
     render: function() {
+        if ( this.disabled ) return;
+
         if (this.style && this._styleDirty) {
             this._styleDirty = false;
             this.style._recalculate(this.transform.zoom);
@@ -823,7 +837,7 @@ util.extend(Map.prototype, /** @lends Map.prototype */{
     },
 
     _rerender: function() {
-        if (this.style && !this._frameId) {
+        if (this.style && !this._frameId && ! this.disabled ) {
             this._frameId = browser.frame(this.render);
         }
     },

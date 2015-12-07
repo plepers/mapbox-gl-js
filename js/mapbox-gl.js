@@ -12,6 +12,7 @@
 var mapboxgl = module.exports = {};
 
 mapboxgl.Map = require('./ui/map');
+mapboxgl.Camera = require('./ui/camera');
 mapboxgl.Control = require('./ui/control/control');
 mapboxgl.Navigation = require('./ui/control/navigation');
 mapboxgl.Attribution = require('./ui/control/attribution');
