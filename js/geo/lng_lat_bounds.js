@@ -67,6 +67,15 @@ LngLatBounds.prototype = {
         return this;
     },
 
+
+    contain:function( lnglat ){
+        return (
+            lnglat.lng > this._sw.lng &&
+            lnglat.lng < this._ne.lng &&
+            lnglat.lat > this._sw.lat &&
+            lnglat.lat < this._ne.lat );
+    },
+
     /**
      * Get the point equidistant from this box's corners
      * @returns {LngLat} centerpoint
