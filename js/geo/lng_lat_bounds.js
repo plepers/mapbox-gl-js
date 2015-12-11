@@ -68,6 +68,27 @@ LngLatBounds.prototype = {
     },
 
 
+    clone:function(){
+        var c = new LngLatBounds( this._sw, this._ne );
+        return c;
+    },
+
+    equal:function( b ){
+        return (
+            this._sw.lng === b._sw.lng &&
+            this._ne.lng === b._ne.lng &&
+            this._sw.lat === b._sw.lat &&
+            this._ne.lat === b._ne.lat
+        )
+    },
+
+    inflate:function( dlat, dlng ){
+        this._sw.lng -= dlng
+        this._ne.lng += dlng
+        this._sw.lat -= dlat
+        this._ne.lat += dlat
+    },
+
     contain:function( lnglat ){
         return (
             lnglat.lng > this._sw.lng &&
