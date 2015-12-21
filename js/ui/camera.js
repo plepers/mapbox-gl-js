@@ -370,6 +370,27 @@ util.extend(Camera.prototype, /** @lends Map.prototype */{
             this.flyTo(options);
     },
 
+    getOptionsForBounds :  function(bounds) {
+
+
+        bounds = LngLatBounds.convert(bounds);
+
+        var tr = this.transform,
+            nw = tr.project(bounds.getNorthWest()),
+            se = tr.project(bounds.getSouthEast()),
+            size = se.sub(nw),
+            scaleX = (tr.width  ) / size.x,
+            scaleY = (tr.height ) / size.y;
+
+        return {
+          center : tr.unproject(nw.add(se).div(2)),
+          zoom   : tr.scaleZoom(tr.scale * Math.min(scaleX, scaleY))
+        };
+
+    },
+
+
+
     /**
      * Change any combination of center, zoom, bearing, and pitch, without
      * a transition. The map will retain the current values for any options
