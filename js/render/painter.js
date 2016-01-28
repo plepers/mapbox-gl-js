@@ -264,34 +264,34 @@ Painter.prototype.clearStencil = function() {
 };
 
 Painter.prototype.drawClippingMask = function(tile) {
-    var gl = this.gl;
-    gl.switchShader(this.fillShader, tile.posMatrix);
-    gl.colorMask(false, false, false, false);
+    // var gl = this.gl;
+    // gl.switchShader(this.fillShader, tile.posMatrix);
+    // gl.colorMask(false, false, false, false);
 
-    // Clear the entire stencil buffer, except for the 7th bit, which stores
-    // the global clipping mask that allows us to avoid drawing in regions of
-    // tiles we've already painted in.
-    gl.clearStencil(0x0);
-    gl.stencilMask(0xBF);
-    gl.clear(gl.STENCIL_BUFFER_BIT);
+    // // Clear the entire stencil buffer, except for the 7th bit, which stores
+    // // the global clipping mask that allows us to avoid drawing in regions of
+    // // tiles we've already painted in.
+    // gl.clearStencil(0x0);
+    // gl.stencilMask(0xBF);
+    // gl.clear(gl.STENCIL_BUFFER_BIT);
 
-    // The stencil test will fail always, meaning we set all pixels covered
-    // by this geometry to 0x80. We use the highest bit 0x80 to mark the regions
-    // we want to draw in. All pixels that have this bit *not* set will never be
-    // drawn in.
-    gl.stencilFunc(gl.EQUAL, 0xC0, 0x40);
-    gl.stencilMask(0xC0);
-    gl.stencilOp(gl.REPLACE, gl.KEEP, gl.KEEP);
+    // // The stencil test will fail always, meaning we set all pixels covered
+    // // by this geometry to 0x80. We use the highest bit 0x80 to mark the regions
+    // // we want to draw in. All pixels that have this bit *not* set will never be
+    // // drawn in.
+    // gl.stencilFunc(gl.EQUAL, 0xC0, 0x40);
+    // gl.stencilMask(0xC0);
+    // gl.stencilOp(gl.REPLACE, gl.KEEP, gl.KEEP);
 
-    // Draw the clipping mask
-    gl.bindBuffer(gl.ARRAY_BUFFER, this.tileExtentBuffer);
-    gl.vertexAttribPointer(this.fillShader.a_pos, this.tileExtentBuffer.itemSize, gl.SHORT, false, 8, 0);
-    gl.drawArrays(gl.TRIANGLE_STRIP, 0, this.tileExtentBuffer.itemCount);
+    // // Draw the clipping mask
+    // gl.bindBuffer(gl.ARRAY_BUFFER, this.tileExtentBuffer);
+    // gl.vertexAttribPointer(this.fillShader.a_pos, this.tileExtentBuffer.itemSize, gl.SHORT, false, 8, 0);
+    // gl.drawArrays(gl.TRIANGLE_STRIP, 0, this.tileExtentBuffer.itemCount);
 
-    gl.stencilFunc(gl.EQUAL, 0x80, 0x80);
-    gl.stencilOp(gl.KEEP, gl.KEEP, gl.REPLACE);
-    gl.stencilMask(0x00);
-    gl.colorMask(true, true, true, true);
+    // gl.stencilFunc(gl.EQUAL, 0x80, 0x80);
+    // gl.stencilOp(gl.KEEP, gl.KEEP, gl.REPLACE);
+    // gl.stencilMask(0x00);
+    // gl.colorMask(true, true, true, true);
 };
 
 // Overridden by headless tests.
